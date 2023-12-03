@@ -14,6 +14,8 @@ var x_pressed = null;
 
 var isLandscape = true;
 
+let drawAllInterval;
+
 var selection_position = 0;
 var selection_links = [
 	'https://www.github.com/TDSOJohn',
@@ -38,6 +40,30 @@ function resizeCanvas() {
 
 }
 
+function getMouseClick(event) {
+	const canvas = document.getElementById("terminal");
+	var canvasLeft = canvas.offsetLeft;
+	var canvasTop = canvas.offsetTop;
+	var x = event.pageX - canvasLeft;
+	var y = event.pageY - canvasTop;
+	console.log(x);
+	console.log(y);
+	if (x > 144 && x < 210 && y > 286 && y < 364) {
+		moveUp();
+		drawAllInterval = setTimeout(drawAll, 200);
+	} else if (x > 144 && x < 210 && y > 364 && y < 454) {
+		moveDown();
+		drawAllInterval = setTimeout(drawAll, 200);
+	} else if (x > 46 && x < 114 && y > 287 && y < 359) {
+		select();
+		drawAllInterval = setTimeout(drawAll, 200);
+	} else if (x > 46 && x < 114 && y > 384 && y < 456) {
+		pressBack();
+		drawAllInterval = setTimeout(drawAll, 200);
+	}
+}
+
+// update selection_position, draw everything with updated UI
 function moveUp() {
 	selection_position = (selection_position + 4 - 1) % 4;
 	const canvas = document.getElementById("terminal");
@@ -54,6 +80,7 @@ function moveUp() {
 	drawSelectionRect();
 }
 
+// update selection_position, draw everything with updated UI
 function moveDown() {
 	selection_position = (selection_position + 4 + 1) % 4;
 	const canvas = document.getElementById("terminal");
@@ -181,7 +208,12 @@ addEventListener("load", (event) => {
 	getScreenRatio();
 	
 	addEventListener("resize", getScreenRatio);
-	
+
+	const canvas = document.getElementById("terminal");
+	canvas.addEventListener('click', (event) => {
+		getMouseClick(event);
+	});
+
 	drawAll();
 
 	document.addEventListener(
