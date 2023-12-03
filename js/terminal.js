@@ -23,7 +23,7 @@ var selection_links = [
 ]
 
 // font-related variables
-const font_url = '../fonts/SAIBA-45.woff';
+const font_url = 'fonts/SAIBA-45.woff';
 const saiba_font = new FontFace('SAIBA', `url(${font_url})`);
 
 function getScreenRatio() {
