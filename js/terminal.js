@@ -23,7 +23,7 @@ var selection_links = [
 ]
 
 // font-related variables
-const font_url = 'giovannibasso-eu/fonts/SAIBA-45.otf';
+const font_url = 'https://tdsojohn.github.io/giovannibasso-eu/fonts/SAIBA-45.otf';
 const saiba_font = new FontFace('SAIBA', `url(${font_url})`);
 
 function getScreenRatio() {
