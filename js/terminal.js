@@ -1,16 +1,20 @@
 /*
 Images used in the canvas
 */
-var device = null;
-var controls_background = null;
-var down_normal = null;
-var down_pressed = null;
-var up_normal = null;
-var up_pressed = null;
-var o_normal = null;
-var o_pressed = null;
-var x_normal = null;
-var x_pressed = null;
+var device = new Image();
+var controls_background = new Image();
+var down_normal = new Image();
+var down_pressed = new Image();
+var up_normal = new Image();
+var up_pressed = new Image();
+var o_normal = new Image();
+var o_pressed = new Image();
+var x_normal = new Image();
+var x_pressed = new Image();
+
+// when it reaches 10, all the images are loaded
+// 100% hacky and it smells
+var loadCounter = 0;
 
 var isLandscape = true;
 
@@ -46,8 +50,6 @@ function getMouseClick(event) {
 	var canvasTop = canvas.offsetTop;
 	var x = event.pageX - canvasLeft;
 	var y = event.pageY - canvasTop;
-	console.log(x);
-	console.log(y);
 	if (x > 144 && x < 210 && y > 286 && y < 364) {
 		moveUp();
 		drawAllInterval = setTimeout(drawAll, 200);
@@ -192,18 +194,63 @@ function resizeCanvas() {
 
 }
 
+function drawAfterImageLoad() {
+	loadCounter++;
+	if (loadCounter == 10) {
+		drawAll();
+	}
+}
+
+async function getResources() {
+	device.src = "https://tdsojohn.github.io/giovannibasso-eu/media/terminal/device.png";
+	await device.addEventListener("load", () => {
+		drawAfterImageLoad();
+	}, false);
+	controls_background.src = "https://tdsojohn.github.io/giovannibasso-eu/media/terminal/controls_background.png";
+	await controls_background.addEventListener("load", () => {
+		drawAfterImageLoad();
+	}, false);
+	down_normal.src = "https://tdsojohn.github.io/giovannibasso-eu/media/terminal/down_normal.png";
+	await down_normal.addEventListener("load", () => {
+		drawAfterImageLoad();
+	}, false);
+	down_pressed.src = "https://tdsojohn.github.io/giovannibasso-eu/media/terminal/down_pressed.png";
+	await down_pressed.addEventListener("load", () => {
+		drawAfterImageLoad();
+	}, false);
+	up_normal.src = "https://tdsojohn.github.io/giovannibasso-eu/media/terminal/up_normal.png";
+	await up_normal.addEventListener("load", () => {
+		drawAfterImageLoad();
+	}, false);
+	up_pressed.src = "https://tdsojohn.github.io/giovannibasso-eu/media/terminal/up_pressed.png";
+	await up_pressed.addEventListener("load", () => {
+		drawAfterImageLoad();
+	}, false);
+	o_normal.src = "https://tdsojohn.github.io/giovannibasso-eu/media/terminal/o_normal.png";
+	await o_normal.addEventListener("load", () => {
+		drawAfterImageLoad();
+	}, false);
+	o_pressed.src = "https://tdsojohn.github.io/giovannibasso-eu/media/terminal/o_pressed.png";
+	await o_pressed.addEventListener("load", () => {
+		drawAfterImageLoad();
+	}, false);
+	x_normal.src = "https://tdsojohn.github.io/giovannibasso-eu/media/terminal/x_normal.png";
+	await x_normal.addEventListener("load", () => {
+		drawAfterImageLoad();
+	}, false);
+	x_pressed.src = "https://tdsojohn.github.io/giovannibasso-eu/media/terminal/x_pressed.png";
+	await x_pressed.addEventListener("load", () => {
+		drawAfterImageLoad();
+	}, false);
+	console.log("waited for resources!");
+}
+
+window.addEventListener("load", () => {
+	getResources().then(drawAll);
+}, false);
+
 // run on window load
 addEventListener("load", (event) => {
-	device = document.getElementById("device");
-	controls_background = document.getElementById("controls_background");
-	down_normal = document.getElementById("down_normal");
-	down_pressed = document.getElementById("down_pressed");
-	up_normal = document.getElementById("up_normal");
-	up_pressed = document.getElementById("up_pressed");
-	o_normal = document.getElementById("o_normal");
-	o_pressed = document.getElementById("o_pressed");
-	x_normal = document.getElementById("x_normal");
-	x_pressed = document.getElementById("x_pressed");
 
 	getScreenRatio();
 	
@@ -213,8 +260,6 @@ addEventListener("load", (event) => {
 	canvas.addEventListener('click', (event) => {
 		getMouseClick(event);
 	});
-
-	drawAll();
 
 	document.addEventListener(
 	"keydown",
