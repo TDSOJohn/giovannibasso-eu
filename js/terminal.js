@@ -248,8 +248,8 @@ function drawSelectionRect() {
 		const ctx = canvas.getContext("2d");
 		ctx.strokeStyle = 'blue';
 		var x = 35 * (canvas.width / 256.0);
-		var y = (36 + (45 * selection_position)) * (canvas.height / 512.0);
-		ctx.strokeRect(x, y, 186 * (canvas.width / 256.0), 50 * (canvas.height / 512.0));
+		var y = (40 + (45 * selection_position)) * (canvas.height / 512.0);
+		ctx.strokeRect(x, y, 186 * (canvas.width / 256.0), 44 * (canvas.height / 512.0));
 	}
 }
 
