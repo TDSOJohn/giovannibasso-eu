@@ -32,16 +32,29 @@ var selection_links = [
 const font_url = 'https://tdsojohn.github.io/giovannibasso-eu/fonts/SAIBA-45.otf';
 const saiba_font = new FontFace('SAIBA', `url(${font_url})`);
 
+// correct to match is aspect ratio is leq or geq than aspect ratio of terminal
 function getScreenRatio() {
-	if (window.innerWidth > window.innerHeight)
+	if ((window.innerWidth * 2) > window.innerHeight)
 		isLandscape = true;
 	else
 		isLandscape = false;
-	console.log(isLandscape);
+	resizeCanvasToScreen();
 }
 
-function resizeCanvas() {
-
+// compares terminal aspect ratio to window inner aspect ratio and
+// changes width/height accordingly
+function resizeCanvasToScreen() {
+	if(loadCounter >= 10) {
+		const canvas = document.getElementById("terminal");
+		if(isLandscape == true) {
+			canvas.width = 256 * (window.innerHeight / 512.0);
+			canvas.height = window.innerHeight;
+		} else {
+			canvas.width = window.innerWidth;
+			canvas.height = 512 * (window.innerWidth / 256.0);
+		}
+		drawAll();
+	}
 }
 
 function getMouseClick(event) {
@@ -50,16 +63,28 @@ function getMouseClick(event) {
 	var canvasTop = canvas.offsetTop;
 	var x = event.pageX - canvasLeft;
 	var y = event.pageY - canvasTop;
-	if (x > 144 && x < 210 && y > 286 && y < 364) {
+	if (x > (144 * canvas.width / 256.0) &&
+		x < (210 * canvas.width / 256.0) &&
+		y > (286 * canvas.height / 512.0) &&
+		y < (364 * canvas.height / 512.0)) {
 		moveUp();
 		drawAllInterval = setTimeout(drawAll, 200);
-	} else if (x > 144 && x < 210 && y > 364 && y < 454) {
+	} else if (x > (144 * canvas.width / 256.0) &&
+			x < (210 * canvas.width / 256.0) &&
+			y > (364 * canvas.height / 512.0) &&
+			y < (454 * canvas.height / 512.0)) {
 		moveDown();
 		drawAllInterval = setTimeout(drawAll, 200);
-	} else if (x > 46 && x < 114 && y > 287 && y < 359) {
+	} else if (x > (46 * canvas.width / 256.0) &&
+			x < (114 * canvas.width / 256.0) &&
+			y > (287 * canvas.height / 512.0) &&
+			y < (359 * canvas.height / 512.0)) {
 		select();
 		drawAllInterval = setTimeout(drawAll, 200);
-	} else if (x > 46 && x < 114 && y > 384 && y < 456) {
+	} else if (x > (46 * canvas.width / 256.0) &&
+			x < (114 * canvas.width / 256.0) &&
+			y > (384 * canvas.height / 512.0) &&
+			y < (456 * canvas.height / 512.0)) {
 		pressBack();
 		drawAllInterval = setTimeout(drawAll, 200);
 	}
@@ -71,12 +96,18 @@ function moveUp() {
 	const canvas = document.getElementById("terminal");
 	if (canvas.getContext) {
 		const ctx = canvas.getContext("2d");
-		ctx.clearRect(0, 0, canvas.width, canvas.height);
 		drawBackground();
-		ctx.drawImage(up_pressed, 0, 0);
-		ctx.drawImage(down_normal, 0, 0);
-		ctx.drawImage(o_normal, 0, 0);
-		ctx.drawImage(x_normal, 0, 0);
+		if(isLandscape == true) {
+			ctx.drawImage(up_pressed, 0, 0, canvas.width, canvas.height);
+			ctx.drawImage(down_normal, 0, 0, canvas.width, canvas.height);
+			ctx.drawImage(o_normal, 0, 0, canvas.width, canvas.height);
+			ctx.drawImage(x_normal, 0, 0, canvas.width, canvas.height);
+		} else {
+			ctx.drawImage(up_pressed, 0, 0, canvas.width, canvas.height);
+			ctx.drawImage(down_normal, 0, 0, canvas.width, canvas.height);
+			ctx.drawImage(o_normal, 0, 0, canvas.width, canvas.height);
+			ctx.drawImage(x_normal, 0, 0, canvas.width, canvas.height);
+		}
 		drawText();
 	}
 	drawSelectionRect();
@@ -88,12 +119,18 @@ function moveDown() {
 	const canvas = document.getElementById("terminal");
 	if (canvas.getContext) {
 		const ctx = canvas.getContext("2d");
-		ctx.clearRect(0, 0, canvas.width, canvas.height);
 		drawBackground();
-		ctx.drawImage(up_normal, 0, 0);
-		ctx.drawImage(down_pressed, 0, 0);
-		ctx.drawImage(o_normal, 0, 0);
-		ctx.drawImage(x_normal, 0, 0);
+		if(isLandscape == true) {
+			ctx.drawImage(up_normal, 0, 0, canvas.width, canvas.height);
+			ctx.drawImage(down_pressed, 0, 0, canvas.width, canvas.height);
+			ctx.drawImage(o_normal, 0, 0, canvas.width, canvas.height);
+			ctx.drawImage(x_normal, 0, 0, canvas.width, canvas.height);
+		} else {
+			ctx.drawImage(up_normal, 0, 0, canvas.width, canvas.height);
+			ctx.drawImage(down_pressed, 0, 0, canvas.width, canvas.height);
+			ctx.drawImage(o_normal, 0, 0, canvas.width, canvas.height);
+			ctx.drawImage(x_normal, 0, 0, canvas.width, canvas.height);
+		}
 		drawText();
 	}
 	drawSelectionRect();
@@ -103,27 +140,39 @@ function pressSelect() {
 	const canvas = document.getElementById("terminal");
 	if (canvas.getContext) {
 		const ctx = canvas.getContext("2d");
-		ctx.clearRect(0, 0, canvas.width, canvas.height);
 		drawBackground();
-		ctx.drawImage(up_normal, 0, 0);
-		ctx.drawImage(down_normal, 0, 0);
-		ctx.drawImage(o_normal, 0, 0);
-		ctx.drawImage(x_pressed, 0, 0);
+		if(isLandscape == true) {
+			ctx.drawImage(up_normal, 0, 0, canvas.width, canvas.height);
+			ctx.drawImage(down_normal, 0, 0, canvas.width, canvas.height);
+			ctx.drawImage(o_normal, 0, 0, canvas.width, canvas.height);
+			ctx.drawImage(x_pressed, 0, 0, canvas.width, canvas.height);
+		} else {
+			ctx.drawImage(up_normal, 0, 0, canvas.width, canvas.height);
+			ctx.drawImage(down_normal, 0, 0, canvas.width, canvas.height);
+			ctx.drawImage(o_normal, 0, 0, canvas.width, canvas.height);
+			ctx.drawImage(x_pressed, 0, 0, canvas.width, canvas.height);
+		}
 		drawText();
 	}
 	drawSelectionRect();
 }
 
 function pressBack() {
+	drawBackground();
 	const canvas = document.getElementById("terminal");
 	if (canvas.getContext) {
 		const ctx = canvas.getContext("2d");
-		ctx.clearRect(0, 0, canvas.width, canvas.height);
-		drawBackground();
-		ctx.drawImage(up_normal, 0, 0);
-		ctx.drawImage(down_normal, 0, 0);
-		ctx.drawImage(o_pressed, 0, 0);
-		ctx.drawImage(x_normal, 0, 0);
+		if(isLandscape == true) {
+			ctx.drawImage(up_normal, 0, 0, canvas.width, canvas.height);
+			ctx.drawImage(down_normal, 0, 0, canvas.width, canvas.height);
+			ctx.drawImage(o_pressed, 0, 0, canvas.width, canvas.height);
+			ctx.drawImage(x_normal, 0, 0, canvas.width, canvas.height);
+		} else {
+			ctx.drawImage(up_normal, 0, 0, canvas.width, canvas.height);
+			ctx.drawImage(down_normal, 0, 0, canvas.width, canvas.height);
+			ctx.drawImage(o_pressed, 0, 0, canvas.width, canvas.height);
+			ctx.drawImage(x_normal, 0, 0, canvas.width, canvas.height);
+		}
 		drawText();
 	}
 	drawSelectionRect();
@@ -141,21 +190,35 @@ function drawBackground() {
 	const canvas = document.getElementById("terminal");
 	if (canvas.getContext) {
 		const ctx = canvas.getContext("2d");
-		ctx.drawImage(controls_background, 0, 0);
-		ctx.drawImage(device, 0, 0);
+		ctx.clearRect(0, 0, canvas.width, canvas.height);
+		if(isLandscape == true) {
+			ctx.drawImage(controls_background, 0, 0, canvas.width, canvas.height);
+			ctx.drawImage(device, 0, 0, canvas.width, canvas.height);
+		} else {
+			ctx.drawImage(controls_background, 0, 0, canvas.width, canvas.height);
+			ctx.drawImage(device, 0, 0, canvas.width, canvas.height);
+			
+		}
 	}
 }
 
 function drawAll() {
 	const canvas = document.getElementById("terminal");
 	if (canvas.getContext) {
+		drawBackground();
 		const ctx = canvas.getContext("2d");
-		ctx.drawImage(controls_background, 0, 0);
-		ctx.drawImage(device, 0, 0);
-		ctx.drawImage(up_normal, 0, 0);
-		ctx.drawImage(down_normal, 0, 0);
-		ctx.drawImage(o_normal, 0, 0);
-		ctx.drawImage(x_normal, 0, 0);
+		if(isLandscape == true) {
+			ctx.drawImage(up_normal, 0, 0, canvas.width, canvas.height);
+			ctx.drawImage(down_normal, 0, 0, canvas.width, canvas.height);
+			ctx.drawImage(o_normal, 0, 0, canvas.width, canvas.height);
+			ctx.drawImage(x_normal, 0, 0, canvas.width, canvas.height);
+		} else {
+			ctx.drawImage(up_normal, 0, 0, canvas.width, canvas.height);
+			ctx.drawImage(down_normal, 0, 0, canvas.width, canvas.height);
+			ctx.drawImage(o_normal, 0, 0, canvas.width, canvas.height);
+			ctx.drawImage(x_normal, 0, 0, canvas.width, canvas.height);
+
+		}
 		drawText();
 		drawSelectionRect();
 	}
@@ -170,12 +233,12 @@ async function drawText() {
 	const canvas = document.getElementById("terminal");
 	if (canvas.getContext) {
 		const ctx = canvas.getContext("2d");
-		ctx.font = "28px SAIBA";
+		ctx.font = ((canvas.width / 256.0) * 28) + "px SAIBA";
 		ctx.fillStyle = 'blue';
-		ctx.fillText("GitHub", 74, 72);
-		ctx.fillText("LinkedIn", 60, 117);
-		ctx.fillText("PixelFed", 56, 162);
-		ctx.fillText("Mastodon", 48, 207);
+		ctx.fillText("GitHub", 74 * (canvas.width / 256.0), 72 * (canvas.height / 512.0));
+		ctx.fillText("LinkedIn", 60 * (canvas.width / 256.0), 117 * (canvas.height / 512.0));
+		ctx.fillText("PixelFed", 56 * (canvas.width / 256.0), 162 * (canvas.height / 512.0));
+		ctx.fillText("Mastodon", 48 * (canvas.width / 256.0), 207 * (canvas.height / 512.0));
 	}	
 }
 
@@ -184,23 +247,25 @@ function drawSelectionRect() {
 	if (canvas.getContext) {
 		const ctx = canvas.getContext("2d");
 		ctx.strokeStyle = 'blue';
-		var x = 35;
-		var y = 36 + (45 * selection_position);
-		ctx.strokeRect(x, y, 186, 50);
-	}	
+		var x = 35 * (canvas.width / 256.0);
+		var y = (36 + (45 * selection_position)) * (canvas.height / 512.0);
+		ctx.strokeRect(x, y, 186 * (canvas.width / 256.0), 50 * (canvas.height / 512.0));
+	}
 }
 
 function resizeCanvas() {
 
 }
 
+// count all loaded resources. If all are loaded, draw all in canvas
 function drawAfterImageLoad() {
 	loadCounter++;
 	if (loadCounter == 10) {
-		drawAll();
+		resizeCanvasToScreen();
 	}
 }
 
+// get all external images and draw all
 async function getResources() {
 	device.src = "https://tdsojohn.github.io/giovannibasso-eu/media/terminal/device.png";
 	await device.addEventListener("load", () => {
@@ -242,7 +307,6 @@ async function getResources() {
 	await x_pressed.addEventListener("load", () => {
 		drawAfterImageLoad();
 	}, false);
-	console.log("waited for resources!");
 }
 
 window.addEventListener("load", () => {
