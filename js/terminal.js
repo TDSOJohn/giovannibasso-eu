@@ -23,7 +23,7 @@ let drawAllInterval;
 var selection_position = 0;
 var selection_links = [
 	'https://www.github.com/TDSOJohn',
-	'https://www.linkedin.com/in/giovanni-basso-39712619b',
+	'https://www.instagram.com/automatic_eye/',
 	'https://pixelfed.social/TDSOJohn',
 	'https://mastodon.social/@TDSOJohn'
 ]
@@ -183,7 +183,6 @@ function select() {
 }
 
 function goBack() {
-	console.log("going back...");
 }
 
 function drawBackground() {
@@ -236,7 +235,7 @@ async function drawText() {
 		ctx.font = ((canvas.width / 256.0) * 28) + "px SAIBA";
 		ctx.fillStyle = 'blue';
 		ctx.fillText("GitHub", 74 * (canvas.width / 256.0), 72 * (canvas.height / 512.0));
-		ctx.fillText("LinkedIn", 60 * (canvas.width / 256.0), 117 * (canvas.height / 512.0));
+		ctx.fillText("Instagram", 60 * (canvas.width / 256.0), 117 * (canvas.height / 512.0));
 		ctx.fillText("PixelFed", 56 * (canvas.width / 256.0), 162 * (canvas.height / 512.0));
 		ctx.fillText("Mastodon", 48 * (canvas.width / 256.0), 207 * (canvas.height / 512.0));
 	}	
