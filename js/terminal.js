@@ -235,8 +235,8 @@ async function drawText() {
 		ctx.font = ((canvas.width / 256.0) * 28) + "px SAIBA";
 		ctx.fillStyle = 'blue';
 		ctx.fillText("GitHub", 74 * (canvas.width / 256.0), 72 * (canvas.height / 512.0));
-		ctx.fillText("Instagram", 60 * (canvas.width / 256.0), 117 * (canvas.height / 512.0));
-		ctx.fillText("PixelFed", 56 * (canvas.width / 256.0), 162 * (canvas.height / 512.0));
+		ctx.fillText("Instagram", 45 * (canvas.width / 256.0), 117 * (canvas.height / 512.0));
+		ctx.fillText("PixelFed", 55 * (canvas.width / 256.0), 162 * (canvas.height / 512.0));
 		ctx.fillText("Mastodon", 48 * (canvas.width / 256.0), 207 * (canvas.height / 512.0));
 	}	
 }
